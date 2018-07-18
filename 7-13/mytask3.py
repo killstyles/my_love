@@ -10,4 +10,4 @@ for i in myuser:
 		nu2 += 1
 	elif i.isdigit():
 		nu3 += 1
-print('upper:{} lower:{} digit:{}'.format(nu1,nu2,nu3))
+print('upper:{} lower:{} digit:{}'.format(nu2,nu2,nu3))
