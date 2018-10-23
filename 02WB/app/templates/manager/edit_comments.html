@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<h2><small>管理评论界面!</small>&nbsp;&nbsp;{{current_user.name}}</h2>
+{% endblock %}
+
+{% block page_content1 %}
+
+    {% for comments in paginate.items %}
+
+        <a><font size="4" color="#191970" style="margin-right: 300px;">{{comments.news.title}}</font></a><br>
+        <a href="{{url_for('manager.delete_comments', cid=comments.id)}}">
+                        删除
+                    </a>
+
+        <div class="alert alert-success" role="alert">{{comments.user.name}}<br>{{moment(comments.timestamp).fromNow()}}:<br>{{comments.body}}</div>
+    {% endfor %}
+ <div align="center">
+        {% import 'macro/macro.html' as macro %}
+        {{macro.pagination_widget(paginate, 'manager.index')}}
+    </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!--在app/templates下找base.html-->
+{% extends 'base.html' %}
+
+{% block page_content%}
+    <h2><small>Dear</small>&nbsp;&nbsp;{{current_user.name}}</h2>
+    <a href="{{url_for('main.post_news')}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>
+{% endblock %}
+
+{% block page_content1 %}
+    <div class="page-header">
+        <font size="4" color="#191970" style="margin-right: 300px;">{{news.title}}</font>
+        <font size="3" color="#dc143c" style="margin-right: 30px;">
+            {% if current_user == news.user or current_user.is_admin() %}
+                <a href="{{url_for('main.delete_news', nid=news.id)}}">
+                    删除
+                </a>
+            {% endif %}
+        </font>
+        <font size="3" color="black" style="margin-right: 100px;">
+            <a href="{{url_for('main.user_info', id=news.user.id)}}">
+                {{news.user.name}}
+            </a>
+        </font>
+        <font size="3" color="black">{{moment(news.timestamp).fromNow()}}</font><br>
+        <br><font size="2" color="black">
+            <pre>{{news.body}}</pre>
+        </font>
+    </div>
+    <a href="{{url_for('main.post_comments', nid=news.id)}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true">发表评论</span>
+    </a><br>
+    {% for comments in paginate.items %}
+ {% if current_user == comments.user or current_user.is_admin() %}
+                <a href="{{url_for('main.delete_comments', cid=comments.id)}}">
+                    删除
+                </a>
+            {% endif %}
+    <div class="alert alert-success" role="alert">{{comments.user.name}}<br>{{moment(comments.timestamp).fromNow()}}:<br>{{comments.body}}</div>
+
+    {% endfor %}
+  <div align="center">
+        {% import 'macro/macro.html' as macro %}
+        {{macro.pagination_widget(paginate, 'main.news',nid=news.id)}}
+    </div>
+{% endblock %}
+
